@@ -1,0 +1,7 @@
+# To - Do
+
+# Create a multi-dimensional array, 3 x 3 -> Vincent
+# Add borders to it (css) -> David
+# On click of cell, add O/X. Alternating. -> Vincent
+# If any cell has 3 in a row, either diagonally or horizontally, they win. game reset. -> David
+
