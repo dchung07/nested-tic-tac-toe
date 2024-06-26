@@ -1,0 +1,16 @@
+body {
+    margin: 0;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
