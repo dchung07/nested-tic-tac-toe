@@ -1,9 +1,12 @@
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
 
+let won = false;
+let winning_message = document.getElementById('winning_message');
+
 // Create a multi-dimensional array
 
-const grid = [
+let grid = [
     ['', '', ''],
     ['', '', ''],
     ['', '', '']
@@ -12,6 +15,65 @@ const grid = [
 const cellSize = canvas.width / 3;
 const rows = grid.length;
 const cols = grid[0].length;
+
+function winCondition(input) {
+    //input should be whether it is O or X, to denote whether it is tic or tac.
+    if(input === 'O' || input === 'X') {
+        if( (grid[0][0] === input &&
+            grid[0][1] === input &&
+            grid[0][2] === input) ||
+            (
+                grid[0][0] === input &&
+                grid[1][1] === input &&
+                grid[2][2] === input
+            ) ||
+            (
+                grid[2][0] === input &&
+                grid[1][1] === input &&
+                grid[0][2] === input
+            ) ||
+            (
+                grid[1][0] === input &&
+                grid[1][1] === input &&
+                grid[1][2] === input
+            ) ||
+            (
+                grid[2][0] === input &&
+                grid[2][1] === input &&
+                grid[2][2] === input
+            ) ||
+            (
+                grid[0][0] === input &&
+                grid[1][0] === input &&
+                grid[2][0] === input
+            ) ||
+            (
+                grid[0][1] === input &&
+                grid[1][1] === input &&
+                grid[2][1] === input
+            ) ||
+            (
+                grid[0][2] === input &&
+                grid[1][2] === input &&
+                grid[2][2] === input
+            )
+        ) {
+            if(input === 'O') {
+                console.log("Winner is O");
+            } else if(input === 'X') {
+                console.log("Winner is X");
+            } else {
+    
+            }
+            winning_message.style.display = "block";
+            winning_message.textContent = "Winner, Winner, Chicken Dinner!";
+            won = true;
+            turn = 0;
+        }
+    } else {
+        //Invalid Input -> Do nothing
+    }
+}
 
 let currentPlayer = 'X';
 
@@ -31,21 +93,50 @@ function drawGrid() {
 }
 
 function handleClick(event) {
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    const col = Math.floor(x / cellSize);
-    const row = Math.floor(y / cellSize);
-
-    if (grid[row][col] === '') {
-        grid[row][col] = currentPlayer;
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-        drawGrid();
+    if(!won) {
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+    
+        const col = Math.floor(x / cellSize);
+        const row = Math.floor(y / cellSize);
+    
+        if (grid[row][col] === '') {
+            grid[row][col] = currentPlayer;
+    
+            if(currentPlayer === 'O') {
+                grid[row][col] = 'O';
+                winCondition('O');
+            } else if(currentPlayer === 'X') {
+                grid[row][col] === 'X';
+                winCondition('X');
+            }
+    
+            console.log(grid);
+    
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            drawGrid();
+        }
+    } else {
+        //Do nothing, game is won
     }
 }
 
 canvas.addEventListener('click', handleClick);
+
+let reset_game = document.getElementById('reset_game');
+reset_game.addEventListener('click', function() {
+    turn = 'X';
+    won = false;
+    winning_message.textContent = "";
+    winning_message.style.display = "block";
+    grid = [
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']
+    ];
+    drawGrid();
+});
 
 window.onload = function() {
     drawGrid();
