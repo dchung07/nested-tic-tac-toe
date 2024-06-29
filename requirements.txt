@@ -5,3 +5,11 @@
 # On click of cell, add O/X. Alternating. -> Vincent
 # If any cell has 3 in a row, either diagonally or horizontally, they win. game reset. -> David
 
+# New requirements
+
+# Create a parent canvas
+# Loop through and create 9 tic tac toe boards in a 3x3 grid
+# Make the border of each individual tic tac toe board bolder
+# On individual tic tac toe board win, change the board to a massive 'O' or 'X' (depending on winner)
+# 3 in a row in the larger grid wins entire game.
+
