@@ -63,12 +63,13 @@ function drawGrid(canvasInput, canvasName) {
                 // ctx.textBaseline = 'middle';
 
                 //Change text to whatever they won with.
+                let currentTemp;
                 if(currentPlayer === 'O') {
-                    currentPlayer = 'X';
+                    currentTemp = 'X';
                 } else if(currentPlayer === 'X') {
-                    currentPlayer = 'O';
+                    currentTemp = 'O';
                 }
-                ctx.fillText(currentPlayer, canvasInput.width/2, canvasInput.height/2);
+                ctx.fillText(currentTemp, canvasInput.width/2, canvasInput.height/2);
             } else {
                 if (canvasGrid[row][col]) {
                     ctx.font = `${cellSize * 0.8}px Arial`;
