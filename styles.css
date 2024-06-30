@@ -13,9 +13,9 @@
 }
 
 .board {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
 }
 
 #reset_game {
@@ -26,6 +26,10 @@
     display: none;
 }
 
-#myCanvas {
+#myCanvas, #myCanvas3 {
+    border: 1px solid black;
+}
+
+#myCanvas2 {
     border: 1px solid black;
 }

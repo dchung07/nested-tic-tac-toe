@@ -7,9 +7,15 @@
 
 # New requirements
 
-# Create a parent canvas
-# Loop through and create 9 tic tac toe boards in a 3x3 grid
-# Make the border of each individual tic tac toe board bolder
-# On individual tic tac toe board win, change the board to a massive 'O' or 'X' (depending on winner)
-# 3 in a row in the larger grid wins entire game.
+# Create a parent canvas -> D
+# Loop through and create 9 tic tac toe boards in a 3x3 grid -> D
+# Make the border of each individual tic tac toe board bolder -> D
+# On individual tic tac toe board win, change the board to a massive 'O' or 'X' (depending on winner) -> D
+
+# 3 in a row in the larger grid wins entire game. -> V
+# Make it so the massive 'O' or 'X' is an overlay over the past board (so players can still see what happened) -> V
+# Winning text when someone gets 3 in a row -> V
+# Put a line through the 3 in a row for visual calrity -> V
+
+
 
