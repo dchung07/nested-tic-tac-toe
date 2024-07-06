@@ -43,11 +43,11 @@ function winCondition(canvasGrid, input, canvasName) {
             if (combo.every(([row, col]) => canvasGrid[row][col] === input)) {
                 console.log(`Winner is ${input}`);
                 winStatus[`${canvasName}Won`] = input;
-                return combo; // Return the winning combination
+                return true; // Changed to return true instead of the winning combination
             }
         }
     }
-    return null;
+    return false; // Changed to return false instead of null
 }
 
 function drawGrid(canvasInput, canvasName) {
@@ -97,9 +97,8 @@ function handleClick(event, canvasInput, canvasName) {
         if (canvasGrid[row][col] === '') {
             canvasGrid[row][col] = currentPlayer;
 
-            const winningCombo = winCondition(canvasGrid, currentPlayer, canvasName);
-            if (winningCombo) {
-                drawWinningLine(canvasInput, winningCombo);
+            const isWin = winCondition(canvasGrid, currentPlayer, canvasName);
+            if (isWin) {
                 checkOverallWin();
             }
 
@@ -107,16 +106,6 @@ function handleClick(event, canvasInput, canvasName) {
             drawGrid(canvasInput, canvasName);
         }
     }
-}
-
-function drawWinningLine(canvas, winningCombo) {
-    const ctx = canvas.getContext('2d');
-    ctx.beginPath();
-    ctx.moveTo((winningCombo[0][1] + 0.5) * cellSize, (winningCombo[0][0] + 0.5) * cellSize);
-    ctx.lineTo((winningCombo[2][1] + 0.5) * cellSize, (winningCombo[2][0] + 0.5) * cellSize);
-    ctx.strokeStyle = 'red';
-    ctx.lineWidth = 5;
-    ctx.stroke();
 }
 
 function checkOverallWin() {
@@ -143,6 +132,9 @@ function checkOverallWin() {
 }
 
 function drawOverallWinningLine(winningCombo) {
+    const board = document.querySelector('.board');
+    const boardRect = board.getBoundingClientRect();
+
     const startCanvas = document.getElementById(winningCombo[0].replace('Won', ''));
     const endCanvas = document.getElementById(winningCombo[2].replace('Won', ''));
     const startRect = startCanvas.getBoundingClientRect();
@@ -151,14 +143,25 @@ function drawOverallWinningLine(winningCombo) {
     const line = document.createElement('div');
     line.style.position = 'absolute';
     line.style.backgroundColor = 'red';
-    line.style.height = '5px';
-    line.style.width = `${endRect.right - startRect.left}px`;
-    line.style.top = `${(startRect.top + endRect.bottom) / 2}px`;
-    line.style.left = `${startRect.left}px`;
-    line.style.transform = 'translate(0, -50%)';
     line.style.zIndex = '1000';
 
-    document.body.appendChild(line);
+    const startX = startRect.left - boardRect.left + startRect.width / 2;
+    const startY = startRect.top - boardRect.top + startRect.height / 2;
+    const endX = endRect.left - boardRect.left + endRect.width / 2;
+    const endY = endRect.top - boardRect.top + endRect.height / 2;
+
+    const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+    const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+
+    line.style.width = `${length}px`;
+    line.style.height = '5px';
+    line.style.left = `${startX}px`;
+    line.style.top = `${startY}px`;
+    line.style.transformOrigin = 'left';
+    line.style.transform = `rotate(${angle}deg)`;
+
+    board.style.position = 'relative';
+    board.appendChild(line);
 }
 
 const canvases = document.querySelectorAll('canvas');
@@ -176,6 +179,12 @@ document.getElementById('reset_game').addEventListener('click', function() {
         grids[key] = [['', '', ''], ['', '', ''], ['', '', '']];
     }
     canvases.forEach(canvas => drawGrid(canvas, canvas.id));
+
+    // Remove the winning line if it exists
+    const existingLine = document.querySelector('.board > div');
+    if (existingLine) {
+        existingLine.remove();
+    }
 });
 
 window.onload = function() {
